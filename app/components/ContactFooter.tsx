@@ -10,10 +10,10 @@ export default function ContactFooter() {
             Get in touch
           </a>
         </div>
-        
+
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-6 border-t border-white/5 pt-8">
           <div>
-            <span className="text-gray-300 font-bold tracking-tight">ElevateStudio</span> &copy; {new Date().getFullYear()}
+            <span className="text-gray-300 font-bold tracking-tight">devlooperstudio</span> &copy; {new Date().getFullYear()}
           </div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white transition-colors">Twitter</a>

@@ -5,7 +5,7 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-50 glass-nav transition-all duration-300 px-6 py-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold tracking-tight text-white">
-          <span className="text-gradient">Elevate</span>Studio
+          <span className="text-gradient">devlooper</span>studio
         </Link>
         <div className="hidden md:flex gap-8 text-sm font-medium text-gray-300">
           <Link href="#services" className="hover:text-white transition-colors">Services</Link>

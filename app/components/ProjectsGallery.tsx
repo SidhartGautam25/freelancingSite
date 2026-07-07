@@ -1,8 +1,28 @@
 const projects = [
-  { name: "Fintech Dashboard", tag: "Web App", color: "from-emerald-500/30 to-emerald-900/40" },
-  { name: "E-Commerce Platform", tag: "Full-Stack", color: "from-pink-500/30 to-rose-900/40" },
-  { name: "AI Waitlist", tag: "Landing Page", color: "from-indigo-500/30 to-cyan-900/40" },
-  { name: "SaaS Admin Core", tag: "Dashboard", color: "from-orange-500/30 to-red-900/40" }
+  { 
+    name: "marqstats.com", 
+    tag: "Market Analytics", 
+    color: "from-blue-500/30 to-indigo-900/40",
+    link: "https://marqstats.com"
+  },
+  { 
+    name: "godrejpropertypune.com", 
+    tag: "Real Estate Portal", 
+    color: "from-amber-500/30 to-orange-900/40",
+    link: "https://godrejpropertypune.com"
+  },
+  { 
+    name: "maalikmemorial.co.in", 
+    tag: "Memorial Portal", 
+    color: "from-purple-500/30 to-violet-900/40",
+    link: "https://maalikmemorial.co.in/" 
+  },
+  { 
+    name: "snapbharat.com", 
+    tag: "Digital Platform", 
+    color: "from-pink-500/30 to-rose-900/40",
+    link: "https://snapbharat.com" 
+  }
 ];
 
 export default function ProjectsGallery() {
@@ -21,7 +41,13 @@ export default function ProjectsGallery() {
         
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((proj, i) => (
-            <div key={i} className="group relative rounded-3xl overflow-hidden glass-panel aspect-[4/3] cursor-pointer">
+            <a 
+              key={i} 
+              href={proj.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative rounded-3xl overflow-hidden glass-panel aspect-[4/3] cursor-pointer block"
+            >
               <div className={`absolute inset-0 bg-gradient-to-br ${proj.color} group-hover:scale-110 transition-transform duration-700 ease-out`}></div>
               
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
@@ -30,9 +56,15 @@ export default function ProjectsGallery() {
                 <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold tracking-wider mb-3">
                   {proj.tag}
                 </span>
-                <h3 className="text-2xl font-bold text-white">{proj.name}</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{proj.name}</h3>
+                <span className="text-sm text-gray-400 group-hover:text-white transition-colors duration-300 flex items-center gap-1">
+                  Visit website
+                  <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
