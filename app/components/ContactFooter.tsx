@@ -1,45 +1,162 @@
+import Link from "next/link";
+import { theme } from "@/theme/themeConfig";
+
 export default function ContactFooter() {
   return (
     <footer
       id="contact"
-      className="relative pb-12 px-6 border-t border-white/5 bg-black/40"
+      className="relative pb-12 px-6 border-t border-white/5 bg-[#030712] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto pt-24 pb-16">
-        <div className="glass-panel rounded-3xl p-8 md:p-16 text-center max-w-4xl mx-auto mb-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 mix-blend-overlay"></div>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white relative z-10">
-            Ready to build something{" "}
-            <span className="text-gradient">amazing?</span>
-          </h2>
-          <p className="text-xl text-gray-400 mb-10 relative z-10">
-            We are currently accepting new freelance projects. Let&apos;s
-            discuss your vision.
-          </p>
-          <a
-            href="mailto:example@domain.com"
-            className="relative z-10 inline-block bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-          >
-            Get in touch
-          </a>
+      {/* Ambient background glow */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none opacity-20 blur-3xl"
+        style={{ background: theme.colors.primary }}
+      />
+
+      <div className="max-w-7xl mx-auto pt-20 pb-12">
+        {/* Banner Card Inspired by User's Reference Screenshot (Image 4) */}
+        <div
+          className="rounded-3xl p-8 sm:p-12 md:p-16 mb-20 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-8"
+          style={theme.sections.contactBanner.style}
+        >
+          {/* Subtle light streak / haze */}
+          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-blue-400/15 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-cyan-400/15 blur-3xl pointer-events-none" />
+
+          <div className="max-w-2xl relative z-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+              Ready to build something{" "}
+              <span className="text-gradient">impactful?</span>
+            </h2>
+            <p className="text-base sm:text-lg text-blue-100/80 leading-relaxed">
+              From concept to scalable production deployment — we are ready to
+              partner with you. Let&apos;s discuss your vision and delivery
+              timeline.
+            </p>
+          </div>
+
+          <div className="relative z-10 shrink-0">
+            <a
+              href="mailto:contact@devlooperstudio.com"
+              className="inline-flex items-center gap-2.5 bg-white text-[#0a1128] px-8 py-4 rounded-full font-bold text-base hover:bg-gray-100 hover:scale-105 transition-all shadow-[0_10px_25px_rgba(0,0,0,0.3)]"
+            >
+              <span>Get in touch</span>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-6 border-t border-white/5 pt-8">
-          <div>
-            <span className="text-gray-300 font-bold tracking-tight">
-              devlooperstudio
-            </span>{" "}
-            &copy; {new Date().getFullYear()}
+        {/* Footer Navigation & Credits */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-sm text-gray-400 border-b border-white/5 pb-12">
+          <div className="md:col-span-2">
+            <Link
+              href="/"
+              className="text-xl font-bold tracking-tight text-white block mb-3"
+            >
+              <span className="text-gradient">devlooper</span>studio
+            </Link>
+            <p className="text-gray-400 text-xs sm:text-sm max-w-sm leading-relaxed mb-4">
+              High-end bespoke web engineering, cross-platform apps, and custom
+              enterprise software for modern businesses.
+            </p>
+            <div className="flex items-center gap-2 text-xs text-emerald-400 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Available for Q3/Q4 Project Bookings
+            </div>
           </div>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">
-              Twitter
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              LinkedIn
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              GitHub
-            </a>
+
+          <div>
+            <p className="text-xs uppercase tracking-wider text-white font-semibold mb-3">
+              Quick Links
+            </p>
+            <ul className="space-y-2 text-xs sm:text-sm">
+              <li>
+                <Link
+                  href="/#services"
+                  className="hover:text-white transition-colors"
+                >
+                  Core Expertise
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#tech-stack"
+                  className="hover:text-white transition-colors"
+                >
+                  Tech Stack
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/packages"
+                  className="hover:text-white transition-colors"
+                >
+                  Packages & Pricing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#work"
+                  className="hover:text-white transition-colors"
+                >
+                  Featured Case Studies
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-xs uppercase tracking-wider text-white font-semibold mb-3">
+              Direct Contact
+            </p>
+            <ul className="space-y-2 text-xs sm:text-sm">
+              <li>
+                <a
+                  href="mailto:contact@devlooperstudio.com"
+                  className="hover:text-white transition-colors"
+                >
+                  contact@devlooperstudio.com
+                </a>
+              </li>
+              <li>
+                <span className="text-gray-500">
+                  Bangalore & Remote Globally
+                </span>
+              </li>
+              <li className="pt-2 flex gap-4 text-gray-400">
+                <a href="#" className="hover:text-white transition-colors">
+                  GitHub
+                </a>
+                <a href="#" className="hover:text-white transition-colors">
+                  LinkedIn
+                </a>
+                <a href="#" className="hover:text-white transition-colors">
+                  Twitter
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-4">
+          <div>
+            &copy; {new Date().getFullYear()} devlooperstudio. All rights
+            reserved.
+          </div>
+          <div className="text-gray-500">
+            Engineered with Next.js, TypeScript & Tailwind CSS
           </div>
         </div>
       </div>

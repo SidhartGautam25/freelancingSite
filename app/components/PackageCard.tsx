@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PackageItem } from "@/data/packagesData";
+import { theme } from "@/theme/themeConfig";
 
 interface PackageCardProps {
   pkg: PackageItem;
@@ -12,12 +13,17 @@ export default function PackageCard({ pkg }: PackageCardProps) {
 
   return (
     <div
-      className={`relative glass-panel rounded-2xl p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/40 ${
-        pkg.popular ? "border-purple-500/50 shadow-lg shadow-purple-500/10" : ""
+      className={`relative glass-panel rounded-3xl p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 ${
+        pkg.popular
+          ? "border-blue-500/50 shadow-xl shadow-blue-500/10 hover:border-blue-400/70"
+          : "border-white/10 hover:border-white/25"
       }`}
     >
       {pkg.popular && (
-        <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md">
+        <div
+          className="absolute -top-3.5 right-6 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md"
+          style={{ background: theme.gradients.primaryButton }}
+        >
           Most Popular
         </div>
       )}
@@ -38,7 +44,7 @@ export default function PackageCard({ pkg }: PackageCardProps) {
           </div>
 
           {pkg.max_pages && (
-            <div className="inline-block mt-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-purple-300">
+            <div className="inline-block mt-3 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 border border-blue-500/20 text-blue-300">
               Up to {pkg.max_pages} Pages Included
             </div>
           )}
@@ -55,19 +61,21 @@ export default function PackageCard({ pkg }: PackageCardProps) {
                 key={idx}
                 className="flex items-start gap-3 text-sm text-gray-300 leading-snug"
               >
-                <svg
-                  className="w-5 h-5 text-purple-400 shrink-0 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+                <div className="w-5 h-5 rounded-full bg-blue-500/15 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg
+                    className="w-3.5 h-3.5 text-blue-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
                 <span>{feature}</span>
               </li>
             ))}
@@ -80,9 +88,14 @@ export default function PackageCard({ pkg }: PackageCardProps) {
         href="/#contact"
         className={`w-full py-3 px-5 rounded-xl font-semibold text-sm text-center transition-all duration-200 block ${
           pkg.popular
-            ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90 shadow-md shadow-purple-600/20"
-            : "bg-white/10 hover:bg-white/20 text-white border border-white/10"
+            ? "text-white hover:opacity-95 shadow-lg shadow-blue-500/20"
+            : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
         }`}
+        style={
+          pkg.popular
+            ? { background: theme.gradients.primaryButton }
+            : undefined
+        }
       >
         Choose {pkg.name}
       </Link>

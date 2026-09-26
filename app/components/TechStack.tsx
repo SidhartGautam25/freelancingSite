@@ -1,10 +1,11 @@
 "use client";
 
 import { technologiesData, TechnologyItem } from "@/data/technologiesData";
+import { theme } from "@/theme/themeConfig";
 
 function TechBadge({ tech }: { tech: TechnologyItem }) {
   return (
-    <div className="group relative flex items-center gap-3.5 px-5 py-3 rounded-2xl glass-panel border border-white/10 hover:border-white/25 transition-all duration-300 hover:scale-105 select-none shrink-0 shadow-sm hover:shadow-lg hover:shadow-purple-500/5">
+    <div className="group relative flex items-center gap-3.5 px-5 py-3 rounded-2xl glass-panel border border-white/10 hover:border-white/25 transition-all duration-300 hover:scale-105 select-none shrink-0 shadow-sm hover:shadow-lg">
       {/* Subtle brand glow on hover */}
       <div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-15 blur-lg transition-opacity duration-300 pointer-events-none"
@@ -28,7 +29,7 @@ function TechBadge({ tech }: { tech: TechnologyItem }) {
       {/* Info */}
       <div className="flex flex-col">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-white whitespace-nowrap group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-purple-200">
+          <span className="text-sm font-bold text-white whitespace-nowrap group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200">
             {tech.name}
           </span>
           <span className="text-[10px] font-semibold text-gray-400 px-2 py-0.5 rounded-full bg-white/5 border border-white/5 whitespace-nowrap">
@@ -44,17 +45,19 @@ function TechBadge({ tech }: { tech: TechnologyItem }) {
 }
 
 export default function TechStack() {
-  // Split technologies into two balanced rows for dual-direction continuous movement
   const row1 = technologiesData.slice(0, 8);
   const row2 = technologiesData.slice(8);
 
   return (
     <section
       id="tech-stack"
-      className="relative py-14 px-4 z-10 border-t border-b border-white/5 bg-black/30 overflow-hidden"
+      className="relative py-16 px-4 z-10 border-t border-b border-white/5 overflow-hidden"
+      style={theme.sections.techStack.style}
     >
       <div className="max-w-7xl mx-auto mb-8 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-semibold uppercase tracking-wider mb-3">
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-3 border ${theme.sections.techStack.badgeClass}`}
+        >
           Technologies We Master
         </div>
         <h2 className="text-2xl md:text-4xl font-bold text-white">

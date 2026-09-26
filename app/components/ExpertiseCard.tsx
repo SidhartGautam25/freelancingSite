@@ -141,7 +141,7 @@ function renderIcon(icon: string) {
 
 export default function ExpertiseCard({ item }: ExpertiseCardProps) {
   return (
-    <div className="group relative glass-panel rounded-3xl p-7 md:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-500/10">
+    <div className="group relative glass-panel rounded-3xl p-7 md:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10">
       {/* Background glow on hover */}
       <div
         className={`absolute -top-12 -right-12 w-32 h-32 rounded-full bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-15 blur-2xl transition-opacity duration-500 pointer-events-none`}
@@ -151,22 +151,22 @@ export default function ExpertiseCard({ item }: ExpertiseCardProps) {
         {/* Top Header: Icon + Badge */}
         <div className="flex items-center justify-between gap-4 mb-6">
           <div
-            className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} p-0.5 shadow-lg shadow-purple-500/10 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center`}
+            className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} p-0.5 shadow-lg shadow-blue-500/10 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center`}
           >
-            <div className="w-full h-full bg-[#0a0f1d] rounded-[14px] flex items-center justify-center">
+            <div className="w-full h-full bg-[#080e1e] rounded-[14px] flex items-center justify-center">
               {renderIcon(item.icon)}
             </div>
           </div>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/5 border border-white/10 text-gray-300 group-hover:border-purple-500/30 group-hover:text-purple-300 transition-colors">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/5 border border-white/10 text-gray-300 group-hover:border-blue-500/30 group-hover:text-blue-300 transition-colors">
             {item.badge}
           </span>
         </div>
 
         {/* Title & Description */}
-        <h3 className="text-xl md:text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-purple-200 transition-all">
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all">
           {item.title}
         </h3>
-        <p className="text-gray-400 text-sm leading-relaxed mb-6">
+        <p className="text-gray-300/80 text-sm leading-relaxed mb-6">
           {item.description}
         </p>
 
@@ -180,9 +180,7 @@ export default function ExpertiseCard({ item }: ExpertiseCardProps) {
               key={idx}
               className="flex items-start gap-2.5 text-xs md:text-sm text-gray-300"
             >
-              <span className="text-purple-400 font-bold shrink-0 mt-0.5">
-                ✦
-              </span>
+              <span className="text-blue-400 font-bold shrink-0 mt-0.5">✦</span>
               <span className="leading-snug">{highlight}</span>
             </div>
           ))}
@@ -204,7 +202,7 @@ export default function ExpertiseCard({ item }: ExpertiseCardProps) {
 
         <Link
           href="/#contact"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-purple-400 group-hover:text-purple-300 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 group-hover:text-cyan-300 transition-colors"
         >
           <span>Discuss your {item.title.split(" ")[0]} project</span>
           <svg
