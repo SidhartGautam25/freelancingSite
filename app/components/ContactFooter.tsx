@@ -5,7 +5,7 @@ export default function ContactFooter() {
   return (
     <footer
       id="contact"
-      className="relative pb-12 px-6 border-t border-white/5 bg-[#030712] overflow-hidden"
+      className="relative pb-12 px-6 border-t border-slate-800/60 bg-[#0b0f19] overflow-hidden"
     >
       {/* Ambient background glow */}
       <div
@@ -24,7 +24,7 @@ export default function ContactFooter() {
           <div className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-cyan-400/15 blur-3xl pointer-events-none" />
 
           <div className="max-w-2xl relative z-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-100 mb-4 tracking-tight leading-tight">
               Ready to build something{" "}
               <span className="text-gradient">impactful?</span>
             </h2>

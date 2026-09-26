@@ -29,7 +29,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative py-28 px-6 z-10 overflow-hidden border-t border-b border-blue-500/10"
+      className="relative py-28 px-6 z-10 overflow-hidden border-t border-b border-slate-800/60 bg-[#0d1322]"
     >
       {/* "Small Little Boxes" Technical Grid Background (from themeConfig) */}
       <div
@@ -44,7 +44,7 @@ export default function Services() {
       />
 
       {/* Bottom fade mask to seamlessly blend grid into the next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#030712] to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0b0f19] to-transparent pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section Header */}
@@ -54,10 +54,10 @@ export default function Services() {
           >
             Engineering & Strategic Capabilities
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-100">
             Our <span className="text-gradient">Core Expertise</span>
           </h2>
-          <p className="text-gray-300/80 max-w-2xl mx-auto text-base leading-relaxed">
+          <p className="text-slate-300/90 max-w-2xl mx-auto text-base leading-relaxed">
             From cross-platform mobile and desktop applications to bespoke
             enterprise software, digital marketing, and technical SEO, we
             engineer comprehensive software solutions tailored to growth.

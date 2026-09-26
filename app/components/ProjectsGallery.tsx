@@ -91,10 +91,10 @@ export default function ProjectsGallery() {
             >
               Case Studies & Deliveries
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-100">
               Featured <span className="text-gradient">Client Work</span>
             </h2>
-            <p className="text-gray-300/80 max-w-xl text-base">
+            <p className="text-slate-300/90 max-w-xl text-base">
               A selection of our latest bespoke web platforms, software portals,
               and client success stories.
             </p>
@@ -103,8 +103,8 @@ export default function ProjectsGallery() {
       </div>
 
       {/* Edge Gradients for seamless fade */}
-      <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#030712] to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#030712] to-transparent z-20 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#0b0f19] to-transparent z-20 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#0b0f19] to-transparent z-20 pointer-events-none" />
 
       {/* Horizontal Scrolling Track */}
       <div className="marquee-container relative flex overflow-x-hidden w-full py-4">

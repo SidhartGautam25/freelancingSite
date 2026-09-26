@@ -31,14 +31,14 @@ export default function PackageCard({ pkg }: PackageCardProps) {
       <div>
         {/* Header */}
         <div className="mb-6">
-          <h3 className="text-xl font-bold text-white mb-2">{pkg.name}</h3>
+          <h3 className="text-xl font-bold text-slate-100 mb-2">{pkg.name}</h3>
           <div className="flex items-baseline gap-1.5">
             {isStartingPrice && (
-              <span className="text-xs uppercase text-gray-400 font-semibold tracking-wider">
+              <span className="text-xs uppercase text-slate-400 font-semibold tracking-wider">
                 Starting at
               </span>
             )}
-            <span className="text-3xl md:text-4xl font-extrabold text-white">
+            <span className="text-3xl md:text-4xl font-extrabold text-slate-100">
               {formattedPrice}
             </span>
           </div>
@@ -52,14 +52,14 @@ export default function PackageCard({ pkg }: PackageCardProps) {
 
         {/* Features List */}
         <div className="border-t border-white/10 pt-5 mb-8">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">
             Included Features
           </p>
           <ul className="space-y-3">
             {pkg.features.map((feature, idx) => (
               <li
                 key={idx}
-                className="flex items-start gap-3 text-sm text-gray-300 leading-snug"
+                className="flex items-start gap-3 text-sm text-slate-300 leading-snug"
               >
                 <div className="w-5 h-5 rounded-full bg-blue-500/15 flex items-center justify-center shrink-0 mt-0.5">
                   <svg
@@ -89,7 +89,7 @@ export default function PackageCard({ pkg }: PackageCardProps) {
         className={`w-full py-3 px-5 rounded-xl font-semibold text-sm text-center transition-all duration-200 block ${
           pkg.popular
             ? "text-white hover:opacity-95 shadow-lg shadow-blue-500/20"
-            : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+            : "bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10"
         }`}
         style={
           pkg.popular

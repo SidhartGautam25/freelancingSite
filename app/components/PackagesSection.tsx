@@ -23,7 +23,7 @@ export default function PackagesSection({
   return (
     <section
       id="packages"
-      className="relative py-28 px-6 z-10 overflow-hidden border-t border-white/5"
+      className="relative py-28 px-6 z-10 overflow-hidden border-t border-slate-800/60 bg-[#0c1220]"
     >
       {/* Dot Matrix Shading Pattern */}
       <div
@@ -31,12 +31,12 @@ export default function PackagesSection({
         style={theme.patterns.dotMatrix}
       />
 
-      {/* Atmospheric Hazy Violet Ambient Glow */}
+      {/* Atmospheric Hazy Violet Ambient Glow (soft and gentle on eyes) */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 75% 45% at 50% 15%, rgba(139, 92, 246, 0.12), transparent 75%)",
+            "radial-gradient(ellipse 75% 45% at 50% 15%, rgba(139, 92, 246, 0.08), transparent 75%)",
         }}
       />
 
@@ -46,7 +46,7 @@ export default function PackagesSection({
           <div className="mb-8">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group"
+              className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors group"
             >
               <svg
                 className="w-4 h-4 transition-transform group-hover:-translate-x-1"
@@ -75,7 +75,7 @@ export default function PackagesSection({
               ? "Full Service Catalog"
               : "Transparent Pricing & Services"}
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-100">
             {isStandalonePage ? (
               <>
                 All Packages &{" "}
@@ -87,7 +87,7 @@ export default function PackagesSection({
               </>
             )}
           </h2>
-          <p className="text-gray-300/80 max-w-2xl mx-auto text-base">
+          <p className="text-slate-300/90 max-w-2xl mx-auto text-base">
             Clear, honest pricing with zero hidden fees. Select a package
             tailored to your business scale, or reach out for a custom
             enterprise solution.

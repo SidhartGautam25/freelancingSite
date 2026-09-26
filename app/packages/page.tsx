@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PackagesPage() {
   return (
-    <main className="min-h-screen bg-[#030712] text-white pt-16">
+    <main className="min-h-screen bg-[#0b0f19] text-slate-100 pt-16">
       <Navbar />
       <PackagesSection isStandalonePage={true} />
       <ContactFooter />

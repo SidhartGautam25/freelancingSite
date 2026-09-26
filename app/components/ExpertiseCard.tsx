@@ -153,32 +153,32 @@ export default function ExpertiseCard({ item }: ExpertiseCardProps) {
           <div
             className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} p-0.5 shadow-lg shadow-blue-500/10 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center`}
           >
-            <div className="w-full h-full bg-[#080e1e] rounded-[14px] flex items-center justify-center">
+            <div className="w-full h-full bg-[#0f172a] rounded-[14px] flex items-center justify-center">
               {renderIcon(item.icon)}
             </div>
           </div>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/5 border border-white/10 text-gray-300 group-hover:border-blue-500/30 group-hover:text-blue-300 transition-colors">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/5 border border-white/10 text-slate-300 group-hover:border-blue-500/30 group-hover:text-blue-300 transition-colors">
             {item.badge}
           </span>
         </div>
 
         {/* Title & Description */}
-        <h3 className="text-xl md:text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all">
+        <h3 className="text-xl md:text-2xl font-bold text-slate-100 mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all">
           {item.title}
         </h3>
-        <p className="text-gray-300/80 text-sm leading-relaxed mb-6">
+        <p className="text-slate-300/90 text-sm leading-relaxed mb-6">
           {item.description}
         </p>
 
         {/* Key Highlights */}
         <div className="space-y-2.5 mb-6 border-t border-white/5 pt-5">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
             Core Capabilities
           </p>
           {item.highlights.map((highlight, idx) => (
             <div
               key={idx}
-              className="flex items-start gap-2.5 text-xs md:text-sm text-gray-300"
+              className="flex items-start gap-2.5 text-xs md:text-sm text-slate-300"
             >
               <span className="text-blue-400 font-bold shrink-0 mt-0.5">✦</span>
               <span className="leading-snug">{highlight}</span>
@@ -193,7 +193,7 @@ export default function ExpertiseCard({ item }: ExpertiseCardProps) {
           {item.technologies.map((tech, idx) => (
             <span
               key={idx}
-              className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/5 text-gray-400"
+              className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/5 text-slate-400"
             >
               {tech}
             </span>
