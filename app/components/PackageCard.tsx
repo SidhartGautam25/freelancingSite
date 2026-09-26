@@ -77,7 +77,7 @@ export default function PackageCard({ pkg }: PackageCardProps) {
 
       {/* Action Button */}
       <Link
-        href="#contact"
+        href="/#contact"
         className={`w-full py-3 px-5 rounded-xl font-semibold text-sm text-center transition-all duration-200 block ${
           pkg.popular
             ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90 shadow-md shadow-purple-600/20"

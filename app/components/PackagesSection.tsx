@@ -5,7 +5,15 @@ import Link from "next/link";
 import { packagesData } from "@/data/packagesData";
 import PackageCard from "./PackageCard";
 
-export default function PackagesSection() {
+interface PackagesSectionProps {
+  showViewAllButton?: boolean;
+  isStandalonePage?: boolean;
+}
+
+export default function PackagesSection({
+  showViewAllButton = false,
+  isStandalonePage = false,
+}: PackagesSectionProps) {
   const { services } = packagesData.agency;
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
 
@@ -14,13 +22,49 @@ export default function PackagesSection() {
   return (
     <section id="packages" className="relative py-24 px-6 z-10">
       <div className="max-w-7xl mx-auto">
+        {/* Standalone Page Back Navigation */}
+        {isStandalonePage && (
+          <div className="mb-8">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group"
+            >
+              <svg
+                className="w-4 h-4 transition-transform group-hover:-translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <span>Back to Home</span>
+            </Link>
+          </div>
+        )}
+
         {/* Section Header */}
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-semibold uppercase tracking-wider mb-4">
-            Transparent Pricing & Services
+            {isStandalonePage
+              ? "Full Service Catalog"
+              : "Transparent Pricing & Services"}
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Packages & <span className="text-gradient">Pricing Plans</span>
+            {isStandalonePage ? (
+              <>
+                All Packages &{" "}
+                <span className="text-gradient">Service Plans</span>
+              </>
+            ) : (
+              <>
+                Packages & <span className="text-gradient">Pricing Plans</span>
+              </>
+            )}
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Clear, honest pricing with zero hidden fees. Select a package
@@ -114,12 +158,37 @@ export default function PackagesSection() {
                 </p>
               </div>
               <Link
-                href="#contact"
+                href="/#contact"
                 className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold text-sm hover:opacity-90 transition-opacity text-center"
               >
                 Request Custom Proposal
               </Link>
             </div>
+          </div>
+        )}
+
+        {/* View All Packages Button for Home Section */}
+        {showViewAllButton && (
+          <div className="mt-16 text-center">
+            <Link
+              href="/packages"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-bold text-sm hover:bg-gray-200 hover:scale-105 transition-all shadow-[0_0_25px_rgba(255,255,255,0.15)] group"
+            >
+              <span>Explore All Packages & In-Depth Details</span>
+              <svg
+                className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            </Link>
           </div>
         )}
       </div>

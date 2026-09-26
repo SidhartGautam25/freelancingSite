@@ -8,24 +8,27 @@ export default function Navbar() {
           <span className="text-gradient">devlooper</span>studio
         </Link>
         <div className="hidden md:flex gap-8 text-sm font-medium text-gray-300">
-          <Link href="#services" className="hover:text-white transition-colors">
+          <Link
+            href="/#services"
+            className="hover:text-white transition-colors"
+          >
             Services
           </Link>
-          <Link href="#packages" className="hover:text-white transition-colors">
+          <Link href="/packages" className="hover:text-white transition-colors">
             Packages
           </Link>
-          <Link href="#team" className="hover:text-white transition-colors">
+          <Link href="/#team" className="hover:text-white transition-colors">
             Team
           </Link>
-          <Link href="#work" className="hover:text-white transition-colors">
+          <Link href="/#work" className="hover:text-white transition-colors">
             Work
           </Link>
-          <Link href="#contact" className="hover:text-white transition-colors">
+          <Link href="/#contact" className="hover:text-white transition-colors">
             Contact
           </Link>
         </div>
         <Link
-          href="#contact"
+          href="/#contact"
           className="hidden md:inline-flex bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-200 transition-colors"
         >
           Start Project

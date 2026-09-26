@@ -1,8 +1,8 @@
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import Services from "./components/Services";
+import TechStack from "./components/TechStack";
 import PackagesSection from "./components/PackagesSection";
-import AboutTeam from "./components/AboutTeam";
 import ProjectsGallery from "./components/ProjectsGallery";
 import ContactFooter from "./components/ContactFooter";
 
@@ -12,8 +12,8 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <Services />
-      <PackagesSection />
-      <AboutTeam />
+      <TechStack />
+      <PackagesSection showViewAllButton={true} />
       <ProjectsGallery />
       <ContactFooter />
     </main>
