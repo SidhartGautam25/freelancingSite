@@ -5,13 +5,13 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav transition-all duration-300 px-6 py-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+        <Link href="/" className="text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
           <span>
             <span className="text-gradient">devlooper</span>studio
           </span>
         </Link>
-        <div className="hidden md:flex gap-8 text-sm font-medium text-gray-300">
+        <div className="hidden md:flex gap-8 text-sm font-medium text-slate-300">
           <Link
             href="/#services"
             className="hover:text-white transition-colors"

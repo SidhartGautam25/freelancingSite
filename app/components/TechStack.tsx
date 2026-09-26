@@ -60,17 +60,17 @@ export default function TechStack() {
         >
           Technologies We Master
         </div>
-        <h2 className="text-2xl md:text-4xl font-bold text-white">
+        <h2 className="text-2xl md:text-4xl font-bold text-slate-100">
           Our <span className="text-gradient">Technology Stack</span>
         </h2>
-        <p className="text-gray-400 max-w-xl mx-auto text-xs md:text-sm mt-2">
+        <p className="text-slate-400 max-w-xl mx-auto text-xs md:text-sm mt-2">
           Battle-tested frameworks, runtimes, cloud platforms, and security libraries engineered for production.
         </p>
       </div>
 
       {/* Edge Gradient Overlays for seamless infinite fade */}
-      <div className="absolute left-0 top-0 bottom-0 w-16 md:w-36 bg-gradient-to-r from-[#030712] to-transparent z-20 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-36 bg-gradient-to-l from-[#030712] to-transparent z-20 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-16 md:w-36 bg-gradient-to-r from-[#0b0f19] to-transparent z-20 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-36 bg-gradient-to-l from-[#0b0f19] to-transparent z-20 pointer-events-none" />
 
       {/* Dual Row Auto-Moving Marquee Container */}
       <div className="marquee-container space-y-4 relative w-full overflow-hidden py-1">
