@@ -1,56 +1,93 @@
 @import "tailwindcss";
 
 @theme {
-  --color-glass: rgba(255, 255, 255, 0.05);
+  --color-glass: rgba(255, 255, 255, 0.04);
   --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-primary: #3b82f6;
+  --color-secondary: #8b5cf6;
+  --color-accent-cyan: #06b6d4;
+  --color-accent-amber: #f59e0b;
 }
 
 @layer base {
+  :root {
+    --bg-base: #0b0f19;
+    --primary: #3b82f6;
+    --primary-glow: rgba(59, 130, 246, 0.2);
+    --secondary: #8b5cf6;
+    --accent-cyan: #06b6d4;
+  }
+
   body {
-    background-color: #030712;
-    color: #f9fafb;
+    background-color: #0b0f19;
+    color: #f1f5f9;
     overflow-x: hidden;
   }
 }
 
 @layer utilities {
   .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.035);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
   
   .glass-nav {
-    background: rgba(3, 7, 18, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(11, 15, 25, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   }
 
+  /* Multi-color gradient (Soft Sky Blue -> Lavender -> Cyan) */
   .text-gradient {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(to right, #a855f7, #3b82f6);
+    background-image: linear-gradient(135deg, #93c5fd 0%, #c4b5fd 45%, #67e8f9 100%);
+  }
+
+  .text-gradient-warm {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, #fdba74 0%, #fb7185 50%, #c4b5fd 100%);
+  }
+
+  /* Background pattern utilities */
+  .bg-grid-boxes {
+    background-image: 
+      linear-gradient(to right, rgba(96, 165, 250, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(96, 165, 250, 0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .bg-dot-matrix {
+    background-image: radial-gradient(circle, rgba(148, 163, 184, 0.09) 1px, transparent 1px);
+    background-size: 22px 22px;
   }
 
   .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.3;
+    filter: blur(110px);
+    opacity: 0.16;
     z-index: 0;
     pointer-events: none;
     animation: float 20s infinite ease-in-out alternate;
   }
 
   .orb-purple {
-    background: #6b21a8;
+    background: #6366f1;
   }
 
   .orb-blue {
-    background: #1d4ed8;
+    background: #2563eb;
+  }
+
+  .orb-cyan {
+    background: #0ea5e9;
   }
 
   .animate-marquee {
@@ -82,3 +119,4 @@
   0% { transform: translateX(-100%); }
   100% { transform: translateX(0); }
 }
+
