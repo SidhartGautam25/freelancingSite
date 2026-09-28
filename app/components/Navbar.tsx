@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useInquiryModal } from "@/app/context/InquiryModalContext";
 
 export default function Navbar() {
+  const { openInquiryModal } = useInquiryModal();
+
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav transition-all duration-300 px-4 sm:px-6 lg:px-8 py-4">
       <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-4">
@@ -39,9 +44,10 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <Link
-          href="/#contact"
-          className="hidden md:inline-flex items-center gap-2 text-white px-5 py-2 rounded-full text-xs sm:text-sm font-semibold hover:opacity-95 transition-all shadow-[0_0_20px_rgba(59,130,246,0.45)] hover:scale-105 justify-self-end"
+        <button
+          type="button"
+          onClick={() => openInquiryModal({ sourceComponent: "navbar-cta" })}
+          className="hidden md:inline-flex items-center gap-2 text-white px-5 py-2 rounded-full text-xs sm:text-sm font-semibold hover:opacity-95 transition-all shadow-[0_0_20px_rgba(59,130,246,0.45)] hover:scale-105 justify-self-end cursor-pointer"
           style={{
             background: "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)",
           }}
@@ -60,7 +66,7 @@ export default function Navbar() {
               d="M14 5l7 7m0 0l-7 7m7-7H3"
             />
           </svg>
-        </Link>
+        </button>
       </div>
     </nav>
   );

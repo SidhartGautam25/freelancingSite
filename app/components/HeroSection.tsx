@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useInquiryModal } from "@/app/context/InquiryModalContext";
 
 const highlightCards = [
   {
@@ -145,6 +148,8 @@ const brandLogos = [
 ];
 
 export default function HeroSection() {
+  const { openInquiryModal } = useInquiryModal();
+
   return (
     <section className="relative w-full flex flex-col overflow-hidden bg-[#030813]">
       {/* Full-bleed hero — edge to edge, fills viewport below nav */}
@@ -178,34 +183,35 @@ export default function HeroSection() {
 
         <div className="relative z-10 w-full px-5 sm:px-8 md:px-10 lg:px-14 xl:px-16 2xl:px-20">
           <div className="w-full max-w-2xl lg:max-w-[36rem] xl:max-w-[38rem] 2xl:max-w-[42rem]">
-              <div className="inline-flex w-fit items-center gap-2 mb-6 sm:mb-7 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium tracking-wide bg-[#0a1228]/75 border border-blue-500/20 text-slate-200 backdrop-blur-sm">
+            <div className="inline-flex w-fit items-center gap-2 mb-6 sm:mb-7 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium tracking-wide bg-[#0a1228]/75 border border-blue-500/20 text-slate-200 backdrop-blur-sm">
               <span className="text-amber-400">✨</span>
               <span>Turning Ideas into Scalable Digital Products</span>
-              </div>
+            </div>
 
-              <h1 className="text-[2.125rem] sm:text-5xl md:text-[3rem] lg:text-[3.4rem] xl:text-[3.85rem] 2xl:text-[4.25rem] font-extrabold tracking-tight leading-[1.1] text-white mb-6 sm:mb-7">
+            <h1 className="text-[2.125rem] sm:text-5xl md:text-[3rem] lg:text-[3.4rem] xl:text-[3.85rem] 2xl:text-[4.25rem] font-extrabold tracking-tight leading-[1.1] text-white mb-6 sm:mb-7">
               <span className="whitespace-nowrap">
-                Build{" "}
-                <span className="text-slate-400 font-light mx-1">•</span>{" "}
+                Build <span className="text-slate-400 font-light mx-1">•</span>{" "}
                 Develop{" "}
-                <span className="text-slate-400 font-light mx-1">•</span>{" "}
-                Scale
+                <span className="text-slate-400 font-light mx-1">•</span> Scale
               </span>
               <span className="block mt-1.5 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-[#7dd3fc] via-[#c4b5fd] to-[#a5b4fc]">
                 Your Ideas with Us
               </span>
-              </h1>
+            </h1>
 
-              <p className="text-base sm:text-lg lg:text-xl text-slate-300/90 mb-8 sm:mb-9 leading-relaxed max-w-[36rem] xl:max-w-[38rem]">
+            <p className="text-base sm:text-lg lg:text-xl text-slate-300/90 mb-8 sm:mb-9 leading-relaxed max-w-[36rem] xl:max-w-[38rem]">
               We design, build, and deploy high-performance web applications,
               mobile apps, and custom software solutions that help businesses
               scale and innovate.
-              </p>
+            </p>
 
-              <div className="flex flex-wrap items-center gap-4 sm:gap-5">
-              <Link
-                href="/#contact"
-                className="px-7 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg text-slate-950 bg-white hover:bg-slate-100 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_22px_rgba(255,255,255,0.18)] flex items-center gap-2 group"
+            <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+              <button
+                type="button"
+                onClick={() =>
+                  openInquiryModal({ sourceComponent: "hero-cta" })
+                }
+                className="px-7 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg text-slate-950 bg-white hover:bg-slate-100 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_22px_rgba(255,255,255,0.18)] flex items-center gap-2 group cursor-pointer"
               >
                 <span>Start Your Project</span>
                 <svg
@@ -221,14 +227,14 @@ export default function HeroSection() {
                     d="M14 5l7 7m0 0l-7 7m7-7H3"
                   />
                 </svg>
-              </Link>
+              </button>
               <Link
                 href="/#work"
                 className="px-7 sm:px-8 py-3.5 sm:py-4 rounded-full font-semibold text-base sm:text-lg text-white/95 bg-white/[0.04] hover:bg-white/[0.08] border border-white/20 hover:border-white/30 transition-all duration-300 backdrop-blur-sm"
               >
                 Explore Our Work
               </Link>
-              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -236,44 +242,44 @@ export default function HeroSection() {
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 pb-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 w-full mb-10 border-y border-white/[0.06] divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
-          {highlightCards.map((card) => (
-            <Link
-              key={card.id}
-              href="/#services"
-              className="flex items-start sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-5 sm:py-6 transition-colors duration-300 hover:bg-white/[0.02] group"
-            >
-              <div
-                className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105 ${card.iconBg}`}
+            {highlightCards.map((card) => (
+              <Link
+                key={card.id}
+                href="/#services"
+                className="flex items-start sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-5 sm:py-6 transition-colors duration-300 hover:bg-white/[0.02] group"
               >
-                {card.icon}
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-sm sm:text-[15px] font-bold text-white group-hover:text-blue-200 transition-colors leading-tight">
-                  {card.title}
-                </h3>
-                <p className="text-xs text-slate-400 mt-1 leading-snug">
-                  {card.subtitle}
-                </p>
-              </div>
-            </Link>
-          ))}
+                <div
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105 ${card.iconBg}`}
+                >
+                  {card.icon}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm sm:text-[15px] font-bold text-white group-hover:text-blue-200 transition-colors leading-tight">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1 leading-snug">
+                    {card.subtitle}
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
 
           <div className="w-full pt-4 border-t border-white/[0.05] text-center">
-          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-slate-400 mb-5">
-            TRUSTED BY STARTUPS AND BUSINESSES
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-14 text-slate-400 text-xs sm:text-sm font-semibold">
-            {brandLogos.map((brand, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-2 hover:text-slate-200 transition-colors cursor-default"
-              >
-                <span className="text-slate-400">{brand.icon}</span>
-                <span>{brand.name}</span>
-              </div>
-            ))}
-          </div>
+            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-slate-400 mb-5">
+              TRUSTED BY STARTUPS AND BUSINESSES
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-14 text-slate-400 text-xs sm:text-sm font-semibold">
+              {brandLogos.map((brand, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 hover:text-slate-200 transition-colors cursor-default"
+                >
+                  <span className="text-slate-400">{brand.icon}</span>
+                  <span>{brand.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
