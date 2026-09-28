@@ -1,6 +1,8 @@
-import Link from "next/link";
+"use client";
+
 import { PackageItem } from "@/data/packagesData";
 import { theme } from "@/theme/themeConfig";
+import { useInquiryModal } from "@/app/context/InquiryModalContext";
 
 interface PackageCardProps {
   pkg: PackageItem;
@@ -10,6 +12,8 @@ export default function PackageCard({ pkg }: PackageCardProps) {
   const isStartingPrice = typeof pkg.starting_price_inr === "number";
   const price = isStartingPrice ? pkg.starting_price_inr : pkg.price_inr;
   const formattedPrice = price ? `₹${price.toLocaleString("en-IN")}` : "Custom";
+
+  const { openInquiryModal } = useInquiryModal();
 
   return (
     <div
@@ -84,9 +88,19 @@ export default function PackageCard({ pkg }: PackageCardProps) {
       </div>
 
       {/* Action Button */}
-      <Link
-        href="/#contact"
-        className={`w-full py-3 px-5 rounded-xl font-semibold text-sm text-center transition-all duration-200 block ${
+      <button
+        type="button"
+        onClick={() =>
+          openInquiryModal({
+            selectedPackage: {
+              id: pkg.id,
+              name: pkg.name,
+              priceInr: price ?? null,
+            },
+            sourceComponent: "package-card",
+          })
+        }
+        className={`w-full py-3 px-5 rounded-xl font-semibold text-sm text-center transition-all duration-200 block cursor-pointer ${
           pkg.popular
             ? "text-white hover:opacity-95 shadow-lg shadow-blue-500/20"
             : "bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10"
@@ -98,7 +112,7 @@ export default function PackageCard({ pkg }: PackageCardProps) {
         }
       >
         Choose {pkg.name}
-      </Link>
+      </button>
     </div>
   );
 }

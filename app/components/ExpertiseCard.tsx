@@ -1,5 +1,7 @@
-import Link from "next/link";
+"use client";
+
 import { ExpertiseItem } from "@/data/expertiseData";
+import { useInquiryModal } from "@/app/context/InquiryModalContext";
 
 interface ExpertiseCardProps {
   item: ExpertiseItem;
@@ -140,6 +142,8 @@ function renderIcon(icon: string) {
 }
 
 export default function ExpertiseCard({ item }: ExpertiseCardProps) {
+  const { openInquiryModal } = useInquiryModal();
+
   return (
     <div className="group relative glass-panel rounded-3xl p-7 md:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10">
       {/* Background glow on hover */}
@@ -200,9 +204,19 @@ export default function ExpertiseCard({ item }: ExpertiseCardProps) {
           ))}
         </div>
 
-        <Link
-          href="/#contact"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 group-hover:text-cyan-300 transition-colors"
+        <button
+          type="button"
+          onClick={() =>
+            openInquiryModal({
+              selectedPackage: {
+                id: item.id,
+                name: item.title,
+                priceInr: null,
+              },
+              sourceComponent: "expertise-card",
+            })
+          }
+          className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 group-hover:text-cyan-300 transition-colors cursor-pointer text-left"
         >
           <span>Discuss your {item.title.split(" ")[0]} project</span>
           <svg
@@ -218,7 +232,7 @@ export default function ExpertiseCard({ item }: ExpertiseCardProps) {
               d="M14 5l7 7m0 0l-7 7m7-7H3"
             />
           </svg>
-        </Link>
+        </button>
       </div>
     </div>
   );

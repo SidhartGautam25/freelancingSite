@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { packagesData } from "@/data/packagesData";
 import { theme } from "@/theme/themeConfig";
+import { useInquiryModal } from "@/app/context/InquiryModalContext";
 import PackageCard from "./PackageCard";
 
 interface PackagesSectionProps {
@@ -15,6 +16,7 @@ export default function PackagesSection({
   showViewAllButton = false,
   isStandalonePage = false,
 }: PackagesSectionProps) {
+  const { openInquiryModal } = useInquiryModal();
   const { services } = packagesData.agency;
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
 
@@ -183,13 +185,25 @@ export default function PackagesSection({
                   Milestone-Based & Custom Scoped
                 </p>
               </div>
-              <Link
-                href="/#contact"
-                className="w-full sm:w-auto px-6 py-3 rounded-xl text-white font-semibold text-sm hover:opacity-95 transition-opacity text-center shadow-lg shadow-blue-600/25"
+              <button
+                type="button"
+                onClick={() =>
+                  openInquiryModal({
+                    selectedPackage: {
+                      id: activeCategory.category
+                        .toLowerCase()
+                        .replace(/\s+/g, "-"),
+                      name: `${activeCategory.category} Enterprise Proposal`,
+                      priceInr: null,
+                    },
+                    sourceComponent: "packages-enterprise-proposal",
+                  })
+                }
+                className="w-full sm:w-auto px-6 py-3 rounded-xl text-white font-semibold text-sm hover:opacity-95 transition-opacity text-center shadow-lg shadow-blue-600/25 cursor-pointer"
                 style={{ background: theme.gradients.primaryButton }}
               >
                 Request Custom Proposal
-              </Link>
+              </button>
             </div>
           </div>
         )}

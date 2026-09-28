@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { theme } from "@/theme/themeConfig";
+import { useInquiryModal } from "@/app/context/InquiryModalContext";
 
 export default function ContactFooter() {
+  const { openInquiryModal } = useInquiryModal();
   return (
     <footer
       id="contact"
@@ -36,9 +40,12 @@ export default function ContactFooter() {
           </div>
 
           <div className="relative z-10 shrink-0">
-            <a
-              href="mailto:contact@devlooperstudio.com"
-              className="inline-flex items-center gap-2.5 bg-white text-[#0a1128] px-8 py-4 rounded-full font-bold text-base hover:bg-gray-100 hover:scale-105 transition-all shadow-[0_10px_25px_rgba(0,0,0,0.3)]"
+            <button
+              type="button"
+              onClick={() =>
+                openInquiryModal({ sourceComponent: "footer-banner" })
+              }
+              className="inline-flex items-center gap-2.5 bg-white text-[#0a1128] px-8 py-4 rounded-full font-bold text-base hover:bg-gray-100 hover:scale-105 transition-all shadow-[0_10px_25px_rgba(0,0,0,0.3)] cursor-pointer"
             >
               <span>Get in touch</span>
               <svg
@@ -54,7 +61,7 @@ export default function ContactFooter() {
                   d="M14 5l7 7m0 0l-7 7m7-7H3"
                 />
               </svg>
-            </a>
+            </button>
           </div>
         </div>
 
