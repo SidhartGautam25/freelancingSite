@@ -165,7 +165,7 @@ export default function HeroSection() {
           />
           <Image
             src="/hero-keyboard-wide.png"
-            alt=""
+            alt="devlooper studio high-performance software engineering workstation"
             fill
             priority
             sizes="100vw"

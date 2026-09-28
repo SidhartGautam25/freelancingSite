@@ -77,18 +77,16 @@ export default function PackagesSection({
               ? "Full Service Catalog"
               : "Transparent Pricing & Services"}
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-100">
-            {isStandalonePage ? (
-              <>
-                All Packages &{" "}
-                <span className="text-gradient">Service Plans</span>
-              </>
-            ) : (
-              <>
-                Packages & <span className="text-gradient">Pricing Plans</span>
-              </>
-            )}
-          </h2>
+          {isStandalonePage ? (
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-slate-100">
+              All Packages &{" "}
+              <span className="text-gradient">Service Plans</span>
+            </h1>
+          ) : (
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-100">
+              Packages & <span className="text-gradient">Pricing Plans</span>
+            </h2>
+          )}
           <p className="text-slate-300/90 max-w-2xl mx-auto text-base">
             Clear, honest pricing with zero hidden fees. Select a package
             tailored to your business scale, or reach out for a custom
