@@ -18,6 +18,14 @@ export const metadata: Metadata = {
   title: "devlopperstudio | Premium Freelancing & Web Development Studio",
   description:
     "High-end bespoke web development, design, and software engineering for modern startups and businesses.",
+  icons: {
+    icon: [
+      { url: "/logo-icon.png", sizes: "512x512", type: "image/png" },
+      { url: "/logo.png", type: "image/png" },
+    ],
+    shortcut: "/logo-icon.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({

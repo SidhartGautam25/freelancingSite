@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useInquiryModal } from "@/app/context/InquiryModalContext";
 
 export default function Navbar() {
@@ -11,10 +12,19 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-4">
         <Link
           href="/"
-          className="text-lg md:text-xl font-bold tracking-tight text-white flex items-center gap-2.5 group justify-self-start"
+          className="text-lg md:text-xl font-bold tracking-tight text-white flex items-center gap-3 group justify-self-start"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
-          <span className="font-semibold">
+          <div className="relative w-8 h-8 rounded-xl overflow-hidden flex items-center justify-center bg-[#010818] border border-blue-500/25 shadow-[0_0_15px_rgba(6,182,212,0.35)] shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <Image
+              src="/logo-icon.png"
+              alt="devlooper studio logo"
+              width={32}
+              height={32}
+              className="w-full h-full object-cover"
+              priority
+            />
+          </div>
+          <span className="font-semibold tracking-tight">
             <span className="text-white">devlooper</span>
             <span className="text-slate-200">studio</span>
           </span>

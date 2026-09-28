@@ -164,7 +164,7 @@ export default function HeroSection() {
             aria-hidden
           />
           <Image
-            src="/hero-keyboard-wide.webp"
+            src="/hero-keyboard-wide.png"
             alt=""
             fill
             priority
@@ -183,10 +183,10 @@ export default function HeroSection() {
 
         <div className="relative z-10 w-full px-5 sm:px-8 md:px-10 lg:px-14 xl:px-16 2xl:px-20">
           <div className="w-full max-w-2xl lg:max-w-[36rem] xl:max-w-[38rem] 2xl:max-w-[42rem]">
-            <div className="inline-flex w-fit items-center gap-2 mb-6 sm:mb-7 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium tracking-wide bg-[#0a1228]/75 border border-blue-500/20 text-slate-200 backdrop-blur-sm">
+            {/* <div className="inline-flex w-fit items-center gap-2 mb-6 sm:mb-7 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium tracking-wide bg-[#0a1228]/75 border border-blue-500/20 text-slate-200 backdrop-blur-sm">
               <span className="text-amber-400">✨</span>
               <span>Turning Ideas into Scalable Digital Products</span>
-            </div>
+            </div> */}
 
             <h1 className="text-[2.125rem] sm:text-5xl md:text-[3rem] lg:text-[3.4rem] xl:text-[3.85rem] 2xl:text-[4.25rem] font-extrabold tracking-tight leading-[1.1] text-white mb-6 sm:mb-7">
               <span className="whitespace-nowrap">
