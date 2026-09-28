@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { theme } from "@/theme/themeConfig";
 import { useInquiryModal } from "@/app/context/InquiryModalContext";
 
@@ -70,9 +71,21 @@ export default function ContactFooter() {
           <div className="md:col-span-2">
             <Link
               href="/"
-              className="text-xl font-bold tracking-tight text-white block mb-3"
+              className="text-xl font-bold tracking-tight text-white flex items-center gap-3 mb-3 group"
             >
-              <span className="text-gradient">devlooper</span>studio
+              <div className="relative w-8 h-8 rounded-xl overflow-hidden flex items-center justify-center bg-[#010818] border border-blue-500/25 shadow-[0_0_12px_rgba(6,182,212,0.3)] shrink-0 transition-transform duration-300 group-hover:scale-105">
+                <Image
+                  src="/logo-icon.png"
+                  alt="devlooper studio logo"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="font-semibold tracking-tight">
+                <span className="text-white">devlooper</span>
+                <span className="text-slate-200">studio</span>
+              </span>
             </Link>
             <p className="text-gray-400 text-xs sm:text-sm max-w-sm leading-relaxed mb-4">
               High-end bespoke web engineering, cross-platform apps, and custom
