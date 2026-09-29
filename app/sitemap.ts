@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { packagesData } from "@/data/packagesData";
+import { listArticles } from "@/lib/blogApi";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
     "https://devlooperstudio.com";
@@ -20,6 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/packages`,
       lastModified: currentDate,
       changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
       priority: 0.9,
     },
   ];
@@ -41,6 +48,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   } catch (error) {
     console.error("[Sitemap] Error building package entries:", error);
+  }
+
+  // Dynamic Published Articles
+  try {
+    const articles = await listArticles();
+    for (const article of articles) {
+      routes.push({
+        url: `${baseUrl}/blog/${article.slug}`,
+        lastModified: article.updatedAt
+          ? new Date(article.updatedAt)
+          : currentDate,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+  } catch (error) {
+    console.error(
+      "[Sitemap] Error fetching published articles for sitemap:",
+      error,
+    );
   }
 
   return routes;

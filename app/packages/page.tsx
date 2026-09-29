@@ -78,12 +78,14 @@ export default function PackagesPage() {
   return (
     <>
       <script
+        id="packages-breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbSchema),
         }}
       />
       <script
+        id="packages-catalog-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(catalogSchema),

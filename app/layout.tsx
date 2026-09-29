@@ -180,20 +180,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
-        <link rel="icon" href="/brand-logo.png" sizes="any" />
-        <link rel="shortcut icon" href="/brand-logo.png" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" />
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <script
+          id="schema-org-graph"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLdSchema),
           }}
         />
-      </head>
-      <body className="min-h-full flex flex-col">
         <InquiryModalProvider>
           {children}
           <InquiryModal />
