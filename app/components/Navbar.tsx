@@ -46,6 +46,9 @@ export default function Navbar() {
           <Link href="/packages" className="hover:text-white transition-colors">
             Packages & Pricing
           </Link>
+          <Link href="/blog" className="hover:text-white transition-colors">
+            Blog
+          </Link>
           <Link href="/#work" className="hover:text-white transition-colors">
             Work
           </Link>

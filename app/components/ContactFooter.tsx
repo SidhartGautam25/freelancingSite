@@ -128,6 +128,14 @@ export default function ContactFooter() {
               </li>
               <li>
                 <Link
+                  href="/blog"
+                  className="hover:text-white transition-colors"
+                >
+                  Engineering Blog
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/#work"
                   className="hover:text-white transition-colors"
                 >
@@ -171,7 +179,7 @@ export default function ContactFooter() {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-4">
-          <div>
+          <div suppressHydrationWarning>
             &copy; {new Date().getFullYear()} devlooperstudio. All rights
             reserved.
           </div>
