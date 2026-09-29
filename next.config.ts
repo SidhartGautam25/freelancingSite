@@ -5,6 +5,13 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  webpack: (config) => {
+    config.resolve.modules = [
+      path.resolve(__dirname, "node_modules"),
+      ...(config.resolve.modules || ["node_modules"]),
+    ];
+    return config;
+  },
   async redirects() {
     return [
       {

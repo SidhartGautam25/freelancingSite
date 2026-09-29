@@ -55,6 +55,7 @@ export type ArticleBlock =
       url: string;
       alt: string;
       caption?: string;
+      size?: "default" | "medium" | "small" | "original";
     };
 
 export type ArticleSummary = {
