@@ -168,96 +168,141 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
 
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        {/* Ambient atmospheric lighting */}
-        <div className="absolute top-16 left-1/3 w-[500px] h-[300px] rounded-full bg-cyan-500/10 blur-[130px] pointer-events-none" />
-        <div className="absolute top-80 right-1/4 w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[140px] pointer-events-none" />
+      <main className="flex-1 pb-24 relative">
+        {/* Ambient atmospheric lighting safely clipped */}
+        <div
+          className="absolute inset-0 overflow-hidden pointer-events-none"
+          aria-hidden="true"
+        >
+          <div className="absolute top-16 left-1/3 w-[500px] h-[300px] rounded-full bg-cyan-500/10 blur-[130px]" />
+          <div className="absolute top-80 right-1/4 w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[140px]" />
+        </div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Breadcrumb Navigation */}
-          <div className="mb-8 flex items-center gap-2 text-xs text-slate-400">
-            <Link href="/" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <span>/</span>
-            <Link href="/blog" className="hover:text-white transition-colors">
-              Blog
-            </Link>
-            <span>/</span>
-            <span className="text-slate-300 truncate max-w-xs sm:max-w-md">
-              {article.title}
-            </span>
-          </div>
-
-          {/* Article Header Card */}
-          <header className="mb-12 max-w-4xl">
-            {/* Tech Stack Badges */}
-            {article.techStacks && article.techStacks.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {article.techStacks.map((stack) => (
-                  <Link
-                    key={stack.id}
-                    href={`/blog?techStack=${encodeURIComponent(stack.slug)}`}
-                    className="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 transition-colors"
-                  >
-                    {stack.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-
-            {/* H1 Heading directly from article.title */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-[1.15]">
-              {article.title}
-            </h1>
-
-            {/* Excerpt if present */}
-            {article.excerpt && (
-              <p className="text-lg sm:text-xl text-slate-300/90 leading-relaxed mb-6 font-normal">
-                {article.excerpt}
-              </p>
-            )}
-
-            {/* Byline */}
-            <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs sm:text-sm text-slate-400 pt-4 border-t border-white/10">
-              <div className="flex items-center gap-2 text-slate-200 font-medium">
-                <span className="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-300 flex items-center justify-center font-bold text-xs border border-cyan-500/30">
-                  {authorDisplay.charAt(0).toUpperCase()}
-                </span>
-                <span>{authorDisplay}</span>
-              </div>
-
-              {article.language && (
-                <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs font-mono">
-                  {article.language}
-                </span>
-              )}
-
-              {writtenDate && <span>Written on {writtenDate}</span>}
-
-              {updatedDate && (
-                <span className="text-slate-500">• Updated {updatedDate}</span>
-              )}
-            </div>
-          </header>
-
-          {/* Full-width Hero Image if present */}
-          {article.heroImageUrl && (
-            <div className="mb-14 rounded-3xl overflow-hidden border border-white/10 bg-[#070b14] shadow-2xl max-w-5xl">
+        {/* 1. Full-width Hero Image at the very top */}
+        {article.heroImageUrl ? (
+          <div className="relative w-full bg-[#050913] border-b border-white/10 overflow-hidden pt-16 sm:pt-20">
+            <div className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] lg:h-[560px] xl:h-[620px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={publicAssetUrl(article.heroImageUrl)}
                 alt={article.title}
-                className="w-full max-h-[600px] object-cover"
+                className="w-full h-full object-cover object-center"
                 loading="eager"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-[#0b0f19]/25 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0b0f19]/50 via-transparent to-transparent pointer-events-none" />
             </div>
-          )}
+          </div>
+        ) : (
+          <div className="pt-24" />
+        )}
 
-          {/* Main 2-Column Content Layout (Article Body + Sticky TOC Sidebar) */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_320px] gap-12 lg:gap-16 items-start max-w-6xl">
-            {/* Left Column: Article Blocks */}
-            <div className="min-w-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative z-10">
+          {/* Main 2-Column Content Layout: Left Sticky Sidebar + Right Article */}
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[300px_1fr] gap-10 lg:gap-14 xl:gap-16 items-start">
+            {/* Left Column: Sticky Sidebar (Fixed once scrolled down past the hero image) */}
+            <aside className="hidden lg:block sticky top-24 self-start space-y-6 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2 z-20">
+              <TableOfContents toc={article.toc || []} />
+
+              {/* Share / Back to Blog Card */}
+              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 text-xs space-y-3">
+                <span className="font-semibold text-slate-300 block uppercase tracking-wider">
+                  Navigation
+                </span>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
+                >
+                  &larr; Back to all articles
+                </Link>
+              </div>
+            </aside>
+
+            {/* Right Column: Breadcrumbs, Header, and Article Body */}
+            <article className="min-w-0">
+              {/* Breadcrumb Navigation */}
+              <nav
+                aria-label="Breadcrumb"
+                className="mb-6 flex items-center gap-2 text-xs text-slate-400"
+              >
+                <Link href="/" className="hover:text-white transition-colors">
+                  Home
+                </Link>
+                <span>/</span>
+                <Link
+                  href="/blog"
+                  className="hover:text-white transition-colors"
+                >
+                  Blog
+                </Link>
+                <span>/</span>
+                <span className="text-slate-300 truncate max-w-xs sm:max-w-md">
+                  {article.title}
+                </span>
+              </nav>
+
+              {/* Article Header */}
+              <header className="mb-10">
+                {/* Tech Stack Badges */}
+                {article.techStacks && article.techStacks.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {article.techStacks.map((stack) => (
+                      <Link
+                        key={stack.id}
+                        href={`/blog?techStack=${encodeURIComponent(stack.slug)}`}
+                        className="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 transition-colors"
+                      >
+                        {stack.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                {/* H1 Heading directly from article.title */}
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-6 leading-[1.18]">
+                  {article.title}
+                </h1>
+
+                {/* Excerpt if present */}
+                {article.excerpt && (
+                  <p className="text-lg sm:text-xl text-slate-300/90 leading-relaxed mb-6 font-normal">
+                    {article.excerpt}
+                  </p>
+                )}
+
+                {/* Byline */}
+                <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs sm:text-sm text-slate-400 pt-4 border-t border-white/10">
+                  <div className="flex items-center gap-2 text-slate-200 font-medium">
+                    <span className="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-300 flex items-center justify-center font-bold text-xs border border-cyan-500/30">
+                      {authorDisplay.charAt(0).toUpperCase()}
+                    </span>
+                    <span>{authorDisplay}</span>
+                  </div>
+
+                  {article.language && (
+                    <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs font-mono">
+                      {article.language}
+                    </span>
+                  )}
+
+                  {/* {writtenDate && <span>Written on {writtenDate}</span>} */}
+
+                  {updatedDate && (
+                    <span className="text-slate-500">
+                      • Updated {updatedDate}
+                    </span>
+                  )}
+                </div>
+              </header>
+
+              {/* Mobile Table of Contents */}
+              {article.toc && article.toc.length > 0 && (
+                <div className="block lg:hidden mb-10">
+                  <TableOfContents toc={article.toc} />
+                </div>
+              )}
+
+              {/* Article Content Blocks */}
               <ArticleBody blocks={article.content?.blocks || []} />
 
               {/* End of Article Divider & CTA */}
@@ -278,30 +323,12 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
                   Talk to Engineers &rarr;
                 </Link>
               </div>
-            </div>
-
-            {/* Right Column: Sticky Table of Contents Sidebar */}
-            <aside className="hidden lg:block sticky top-28 space-y-6">
-              <TableOfContents toc={article.toc || []} />
-
-              {/* Share / Back to Blog Card */}
-              <div className="p-5 rounded-2xl bg-white/[0.015] border border-white/5 text-xs space-y-3">
-                <span className="font-semibold text-slate-300 block uppercase tracking-wider">
-                  Navigation
-                </span>
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition-colors"
-                >
-                  &larr; Back to all articles
-                </Link>
-              </div>
-            </aside>
+            </article>
           </div>
 
           {/* Related Articles Section */}
           {article.relatedArticles && article.relatedArticles.length > 0 && (
-            <section className="mt-24 pt-16 border-t border-white/10 max-w-6xl">
+            <section className="mt-24 pt-16 border-t border-white/10">
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <span className="text-xs uppercase font-semibold text-cyan-400 tracking-wider block mb-1">

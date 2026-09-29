@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import Services from "./components/Services";
+import RecentBlogSection from "./components/RecentBlogSection";
 import TechStack from "./components/TechStack";
 import PackagesSection from "./components/PackagesSection";
 import ProjectsGallery from "./components/ProjectsGallery";
@@ -12,6 +13,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <Services />
+      <RecentBlogSection />
       <TechStack />
       <PackagesSection showViewAllButton={true} />
       <ProjectsGallery />
