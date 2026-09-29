@@ -1,14 +1,84 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import Prism from "prismjs";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-sql";
+import "prismjs/components/prism-go";
+import "prismjs/components/prism-rust";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-css";
+
 import { ArticleBlock, publicAssetUrl } from "@/lib/blogApi";
 
 interface ArticleBodyProps {
   blocks: ArticleBlock[];
 }
 
+const LANG_MAP: Record<string, string> = {
+  ts: "typescript",
+  typescript: "typescript",
+  js: "javascript",
+  javascript: "javascript",
+  jsx: "jsx",
+  tsx: "tsx",
+  py: "python",
+  python: "python",
+  golang: "go",
+  go: "go",
+  rust: "rust",
+  rs: "rust",
+  java: "java",
+  sql: "sql",
+  bash: "bash",
+  sh: "bash",
+  shell: "bash",
+  zsh: "bash",
+  json: "json",
+  css: "css",
+  html: "markup",
+  markup: "markup",
+  xml: "markup",
+};
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function CodeBlock({ code, language }: { code: string; language: string }) {
   const [copied, setCopied] = useState(false);
+
+  const displayLanguage = (language || "CODE").toUpperCase();
+
+  const highlightedHtml = useMemo(() => {
+    const rawLang = (language || "").toLowerCase().trim();
+    const prismLang = LANG_MAP[rawLang] || rawLang;
+    const grammar =
+      Prism.languages[prismLang] ||
+      Prism.languages.typescript ||
+      Prism.languages.javascript;
+
+    if (!grammar) {
+      return escapeHtml(code);
+    }
+
+    try {
+      return Prism.highlight(code, grammar, prismLang);
+    } catch {
+      return escapeHtml(code);
+    }
+  }, [code, language]);
 
   const handleCopy = async () => {
     try {
@@ -21,22 +91,36 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
   };
 
   return (
-    <div className="relative my-8 rounded-2xl overflow-hidden border border-white/15 bg-[#070b14] shadow-2xl">
-      {/* Code Header Bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-white/[0.03] border-b border-white/10 text-xs">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-rose-500/70 inline-block" />
-          <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70 inline-block" />
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70 inline-block" />
-          <span className="ml-2 font-mono text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-            {language || "code"}
+    <div className="relative my-8 rounded-2xl overflow-hidden border border-slate-700/60 bg-[#0F172A] shadow-2xl">
+      {/* IDE Top Header Bar */}
+      <div className="flex items-center justify-between px-4 py-3 bg-[#161F30] border-b border-slate-700/60 select-none">
+        {/* macOS colored window dots + language badge */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <span
+              className="w-3 h-3 rounded-full bg-[#EF4444] inline-block shadow-sm"
+              title="Close"
+            />
+            <span
+              className="w-3 h-3 rounded-full bg-[#F59E0B] inline-block shadow-sm"
+              title="Minimize"
+            />
+            <span
+              className="w-3 h-3 rounded-full bg-[#10B981] inline-block shadow-sm"
+              title="Fullscreen"
+            />
+          </div>
+          <span className="font-mono text-[11px] font-bold tracking-wider text-slate-300 px-2 py-0.5 rounded bg-white/5 border border-white/10">
+            {displayLanguage}
           </span>
         </div>
 
+        {/* Copy Button */}
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[11px] font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 transition-colors border border-white/10 cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 transition-colors border border-white/10 cursor-pointer"
+          aria-label="Copy code to clipboard"
         >
           {copied ? (
             <>
@@ -53,7 +137,7 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span className="text-emerald-400">Copied!</span>
+              <span className="text-emerald-400 font-semibold">Copied!</span>
             </>
           ) : (
             <>
@@ -76,9 +160,12 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
         </button>
       </div>
 
-      {/* Code Text Content */}
-      <pre className="p-5 overflow-x-auto text-sm font-mono text-slate-200 leading-relaxed scrollbar-thin">
-        <code>{code}</code>
+      {/* Code Text Content with Prism Syntax Highlighting */}
+      <pre className="p-5 overflow-x-auto text-sm font-mono leading-relaxed scrollbar-thin bg-[#0F172A]">
+        <code
+          className={`code-ide font-mono text-sm leading-relaxed block text-slate-200 language-${language}`}
+          dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+        />
       </pre>
     </div>
   );
@@ -98,7 +185,6 @@ export default function ArticleBody({ blocks }: ArticleBodyProps) {
       {blocks.map((block) => {
         switch (block.type) {
           case "heading": {
-            // Must use block.text (NOT tocLabel) and block.id
             const scrollClass =
               "scroll-mt-28 font-bold tracking-tight text-white";
             if (block.level === 1) {
@@ -166,22 +252,32 @@ export default function ArticleBody({ blocks }: ArticleBodyProps) {
           }
 
           case "image": {
+            const size = block.size || "default";
+            const imgSizeClasses =
+              size === "small"
+                ? "w-auto max-w-sm max-h-56 object-contain"
+                : size === "medium"
+                  ? "w-auto max-w-xl max-h-96 object-contain"
+                  : size === "original"
+                    ? "w-auto max-w-full max-h-[700px] object-contain"
+                    : "w-full max-w-full object-cover";
+
             return (
-              <figure key={block.id} className="my-8">
-                <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#070b14] shadow-xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={publicAssetUrl(block.url)}
-                    alt={block.alt || "Article illustration"}
-                    className="w-full h-auto object-cover max-h-[600px]"
-                    loading="lazy"
-                  />
-                </div>
-                {block.caption && (
-                  <figcaption className="text-center text-xs text-slate-400 mt-2.5 italic">
+              <figure
+                key={block.id}
+                className="my-6 flex flex-col items-center justify-center space-y-2 text-center"
+              >
+                <img
+                  src={publicAssetUrl(block.url)}
+                  alt={block.alt || "Article illustration"}
+                  className={`mx-auto rounded-xl shadow-md ${imgSizeClasses}`}
+                  loading="lazy"
+                />
+                {block.caption ? (
+                  <figcaption className="text-center text-xs text-slate-400">
                     {block.caption}
                   </figcaption>
-                )}
+                ) : null}
               </figure>
             );
           }

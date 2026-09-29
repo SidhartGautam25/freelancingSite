@@ -120,3 +120,68 @@
   100% { transform: translateX(0); }
 }
 
+/* IDE Code Block Syntax Highlighting (Modern One Dark / IDE Theme) */
+.code-ide .token.comment,
+.code-ide .token.prolog,
+.code-ide .token.doctype,
+.code-ide .token.cdata {
+  color: #6B7280;
+  font-style: italic;
+}
+
+.code-ide .token.punctuation {
+  color: #ABB2BF;
+}
+
+.code-ide .token.property,
+.code-ide .token.tag,
+.code-ide .token.boolean,
+.code-ide .token.number,
+.code-ide .token.constant,
+.code-ide .token.symbol,
+.code-ide .token.deleted {
+  color: #D19A66;
+}
+
+.code-ide .token.selector,
+.code-ide .token.attr-name,
+.code-ide .token.string,
+.code-ide .token.char,
+.code-ide .token.builtin,
+.code-ide .token.inserted {
+  color: #98C379;
+}
+
+.code-ide .token.operator,
+.code-ide .token.entity,
+.code-ide .token.url,
+.code-ide .language-css .token.string,
+.code-ide .style .token.string {
+  color: #56B6C2;
+}
+
+.code-ide .token.atrule,
+.code-ide .token.attr-value,
+.code-ide .token.keyword {
+  color: #C678DD;
+}
+
+.code-ide .token.function,
+.code-ide .token.class-name {
+  color: #61AFEF;
+}
+
+.code-ide .token.regex,
+.code-ide .token.important,
+.code-ide .token.variable {
+  color: #E06C75;
+}
+
+.code-ide .token.italic {
+  font-style: italic;
+}
+
+.code-ide .token.bold {
+  font-weight: bold;
+}
+
