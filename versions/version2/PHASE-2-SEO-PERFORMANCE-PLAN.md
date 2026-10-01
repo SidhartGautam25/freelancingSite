@@ -1,0 +1,369 @@
+# Phase 2 — SEO, Blog Ranking & Performance Plan
+
+**Product:** devlooper studio marketing site + engineering blog  
+**Stack:** Next.js 16 (App Router), React 19, Tailwind 4, external workspace API for articles  
+**Primary domain:** `https://devlooperstudio.com` (www → apex redirect configured)
+
+---
+
+## 1. Executive summary
+
+Phase 1 delivered a polished marketing site and a functional blog with baseline SEO (metadata, sitemap, robots, Organization schema, per-article `BlogPosting` JSON-LD). **Phase 2** closes the gap between “indexable” and **competitive ranking** for commercial queries (web/mobile/custom software) and **informational queries** covered by blog articles.
+
+Ranking requires three layers working together:
+
+1. **Technical SEO** — crawlability, correct canonicals, rich structured data, fast LCP/INP, no duplicate/thin URLs.
+2. **Topical authority** — clear topic hubs, internal links, consistent E-E-A-T (authors, updates, depth).
+3. **Measurement** — Search Console, analytics, Core Web Vitals, index coverage, query-level feedback loops.
+
+This document lists **current structure**, **issues**, **improvements**, **how to implement**, and **what each step fixes**, in order.
+
+---
+
+## 2. Goals (Version 2)
+
+| Goal | Success signal |
+|------|----------------|
+| Main site ranks for branded + service intent | Impressions/clicks for “devlooper”, “web development agency”, geo + service combos in GSC |
+| Blog posts rank for target topics | URLs appear for head terms + long-tail; CTR improves after title/description tuning |
+| Google understands article topics | Rich results eligibility; correct article signals in URL Inspection |
+| Fast, stable UX | LCP & INP “Good” on mobile (field data); Lighthouse performance ≥ 90 on key templates |
+| Sustainable ops | Publish → index within days; sitemap/RSS auto-update; alerts on regressions |
+
+---
+
+## 3. Current structure (as-built)
+
+### 3.1 Repository layout (SEO-relevant)
+
+```
+app/
+  layout.tsx          # Global metadata, Organization + WebSite + ProfessionalService JSON-LD
+  page.tsx            # Home (no page-level metadata export)
+  robots.ts           # Allow /, disallow /api/, /admin/, /_next/, etc.
+  sitemap.ts          # Static routes + packages hash URLs + blog slugs from API
+  packages/page.tsx   # Package catalog metadata + canonical
+  blog/
+    page.tsx          # Blog index metadata; filters via ?techStack=&q=
+    [slug]/page.tsx   # Article detail, generateMetadata, BlogPosting JSON-LD, SSG params
+    components/       # ArticleBody (client + Prism), TOC, filters
+  api/articles/recent/route.ts  # force-dynamic; powers homepage blog preview
+components/           # Hero (client), BlogCard, RecentBlogSection (client fetch), etc.
+lib/blogApi.ts        # Fetches workspace API; revalidate: 60
+public/               # og-image, icons, hero image (PNG), static assets
+data/                 # packages, expertise, technologies (static)
+```
+
+### 3.2 Content & data flow
+
+- **Blog content** lives in the **workspace backend** (`NEXT_PUBLIC_BACKEND_API_URL`), not in the Next repo.
+- **Articles** are fetched at build time (`generateStaticParams`) and runtime with **ISR revalidate 60s**.
+- **Images** for articles often load from **external asset host** via `publicAssetUrl()` — not passed through `next/image` on article hero/related cards.
+- **Homepage** loads recent articles **client-side** (`useRecentArticles` → `/api/articles/recent`), so blog teasers are invisible to crawlers on first HTML response.
+
+### 3.3 SEO features already present
+
+| Feature | Location | Notes |
+|---------|----------|--------|
+| `metadataBase`, title template | `app/layout.tsx` | Good baseline |
+| Canonical (per route) | blog, packages, layout default | Home uses root canonical |
+| Open Graph / Twitter | layout + blog + packages | Article OG uses hero or fallback |
+| `robots.ts` + sitemap link | `app/robots.ts` | Sitemap URL declared |
+| Dynamic sitemap | `app/sitemap.ts` | Includes `/blog/{slug}` |
+| Organization / WebSite schema | `layout.tsx` `@graph` | `sameAs` URLs are placeholders |
+| `BlogPosting` JSON-LD | `blog/[slug]/page.tsx` | Missing several recommended fields |
+| Breadcrumbs (visual) | Article page | **Not** in JSON-LD |
+| `generateStaticParams` | Article routes | Good for pre-render |
+| www → non-www redirect | `next.config.ts` | Good |
+
+### 3.4 Performance-related choices today
+
+| Area | Current behavior | Impact |
+|------|------------------|--------|
+| Hero | `"use client"` + `next/image` priority PNG | Extra JS on LCP path; large raster hero |
+| Recent blog on home | Client fetch after hydration | SEO + LCP delay; empty shell for bots |
+| Article body | Client component; Prism + many language packs | Large JS on article pages |
+| Blog images | Raw `<img>` from CDN | No automatic WebP/size optimization |
+| `next.config.ts` | No `images.remotePatterns` | Cannot optimize remote images without config |
+| Fonts | `Geist` + `Geist_Mono` from `next/font` | Good pattern |
+| API route recent | `force-dynamic` | Always server-rendered on demand |
+
+---
+
+## 4. Issues & gaps (what is still lagging)
+
+### 4.1 Critical (fix first)
+
+1. **Homepage lacks dedicated metadata** — inherits global title/description only; missed opportunity for keyword-focused home title/description and `WebPage` schema.
+2. **Client-rendered blog preview on home** — crawlers and social previews do not see latest articles in HTML; hurts internal linking discovery from home.
+3. **Incomplete article structured data** — no `BreadcrumbList`, weak `author` (string vs `Person` with URL), no `articleSection`, `keywords`, `wordCount`, `inLanguage`, `isPartOf` (`Blog`), optional `speakable`, no `FAQPage` where applicable.
+4. **Filtered blog URLs** (`/blog?techStack=…&q=…`) — risk of **duplicate/thin** indexable URLs without `noindex` or canonical to `/blog`.
+5. **External images without Next Image** — hurts LCP on article pages; no width/height hints → CLS risk.
+6. **Placeholder `sameAs` social URLs** in Organization schema — low trust signal; should be real profiles or removed.
+7. **Sitemap hash URLs** (`/packages#pkg-id`) — Google **typically ignores fragments**; those URLs do not behave like real landing pages.
+
+### 4.2 High (blog ranking blockers)
+
+8. **No topic hub pages** — tech stack is only a query param, not `/blog/topic/nextjs` with unique copy and indexable hub content.
+9. **No RSS/Atom feed** — missed subscriptions, some aggregators, and indirect discovery signals.
+10. **No `ItemList` / `CollectionPage` schema** on blog index for article list.
+11. **No explicit `robots` meta** on search/filter result pages.
+12. **CMS/API may not expose SEO fields** — if backend lacks `metaTitle`, `metaDescription`, `focusKeyword`, `canonicalOverride`, `noindex`, frontend cannot optimize per post.
+13. **Internal linking** — related articles exist; missing systematic links from service pages → relevant posts (topic clusters).
+14. **Author E-E-A-T** — author is display name only; no author page, bio, or `Person` entity URL.
+
+### 4.3 Medium (performance & maintenance)
+
+15. **Hero as client component** — unnecessary for static hero; increases bundle on landing page.
+16. **Prism loaded entirely on client** for all articles — heavy; consider server highlight, lazy load, or subset of languages.
+17. **No `images` config** in Next for workspace CDN domain.
+18. **Hero asset as PNG** — `hero-keyboard-wide.png` likely heavier than WebP/AVIF.
+19. **No Web App Manifest** — minor PWA/branding signal.
+20. **`robots.txt` disallows `/_next/`** — usually OK; verify Google can still load JS/CSS (don't block assets needed for rendering).
+21. **No pagination** on blog — fine while small; needed for crawl budget when catalog grows.
+22. **No hreflang** — only needed if multi-language content ships (articles have `language` field — plan if used).
+
+### 4.4 Strategic (ranking over months)
+
+23. **No content calendar aligned to search intent** — technical posts need keyword research, SERP analysis, and update cadence.
+24. **No backlink / digital PR plan** — off-page SEO not in codebase but required for competitive terms.
+25. **No Search Console / Analytics wiring documented** — cannot improve what you don't measure.
+26. **Core Web Vitals not monitored in CI** — regressions ship silently.
+
+---
+
+## 5. Phase 2 improvements (workstreams)
+
+### Workstream A — Technical SEO foundation (site-wide)
+
+| # | Improvement | How | What it fixes |
+|---|-------------|-----|----------------|
+| A1 | Home `metadata` + `WebPage` JSON-LD | Export `metadata` from `app/page.tsx`; add `WebPage` with `primaryImageOfPage` | Clear home relevance for service keywords |
+| A2 | Fix Organization `sameAs` | Real LinkedIn/GitHub/X URLs or omit | Trust / entity consistency |
+| A3 | Google Search Console + Bing Webmaster | Verify domain; submit sitemap | Index coverage, query data, crawl errors |
+| A4 | Analytics (GA4 or Plausible) + optional GTM | Env-based script in layout or `@next/third-parties` | Funnels, blog engagement, conversion attribution |
+| A5 | `manifest.webmanifest` + theme | `app/manifest.ts` | Branding, mobile install metadata |
+| A6 | Replace package **hash-only** sitemap entries | Real routes e.g. `/packages/[slug]` or drop hash URLs | Crawlable commercial landing pages |
+| A7 | Legal/trust pages if missing | `/privacy`, `/terms` + footer links | Trust for ads and some SERP niches |
+
+### Workstream B — Blog SEO & telling Google the topic
+
+**How Google infers topic:** title, H1, URL, headings, body, internal links, structured data, anchor text, and site-level authority. Phase 2 makes those signals **explicit and consistent**.
+
+| # | Improvement | How | What it fixes |
+|---|-------------|-----|----------------|
+| B1 | Enrich `BlogPosting` JSON-LD | Add `@id`, `url`, `headline`, `description`, `image[]`, `datePublished/Modified`, `author` as `Person[]` with `url`, `publisher` with logo dimensions, `mainEntityOfPage`, `articleSection` (primary topic), `keywords` (from tech stacks + tags), `inLanguage`, `wordCount`, `isPartOf` → `Blog` | Rich results eligibility; clearer topic entity |
+| B2 | `BreadcrumbList` JSON-LD | Home → Blog → Title on every article | Navigation understanding; breadcrumb SERP feature |
+| B3 | `Blog` + `WebPage` on `/blog` | Index page script tag | Collection semantics |
+| B4 | Topic hub routes | `app/blog/topic/[slug]/page.tsx` using `listArticles({ techStack })` + unique H1/intro copy (300+ words) | Rank for “X tutorial/guide” clusters; replaces thin query URLs |
+| B5 | Canonical / robots on filters | `generateMetadata` on blog index: if `searchParams` present → `robots: { index: false }` OR canonical `/blog` | Duplicate URL indexation |
+| B6 | RSS feed | `app/feed.xml/route.ts` or `app/rss.xml/route.ts` from `listArticles()` | Discovery; tools; indirect links |
+| B7 | Sitemap extensions | Add `/blog/topic/{slug}`; set `lastModified` from API; optional `news` only if news sitemap justified | Complete crawl map |
+| B8 | CMS SEO fields (backend) | Extend article model: `seoTitle`, `seoDescription`, `ogImage`, `canonicalUrl`, `noindex`, `focusTopics[]`, `faq[]` | Per-article control; map to metadata + schema |
+| B9 | On-page checklist per article | One H1, logical H2/H3 (TOC), excerpt = meta description, internal links (2–5), CTA | Query relevance + UX |
+| B10 | Author pages | `/blog/author/[slug]` + `ProfilePage` / `Person` schema | E-E-A-T |
+| B11 | `FAQPage` schema | When article has FAQ blocks in CMS | FAQ rich results for eligible queries |
+| B12 | `speakable` (optional) | `SpeakableSpecification` on key summary section | Voice/search assistants (minor) |
+
+**Example: enriched article graph (conceptual)**
+
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devlooperstudio.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://devlooperstudio.com/blog" },
+        { "@type": "ListItem", "position": 3, "name": "Article title", "item": "https://devlooperstudio.com/blog/slug" }
+      ]
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://devlooperstudio.com/blog/slug#article",
+      "headline": "...",
+      "description": "...",
+      "articleSection": "Next.js",
+      "keywords": ["Next.js", "App Router", "SSR"],
+      "inLanguage": "en",
+      "isPartOf": { "@id": "https://devlooperstudio.com/blog#blog" },
+      "author": [{ "@type": "Person", "name": "...", "url": "https://devlooperstudio.com/blog/author/..." }]
+    }
+  ]
+}
+```
+
+### Workstream C — Performance & Core Web Vitals
+
+| # | Improvement | How | What it fixes |
+|---|-------------|-----|----------------|
+| C1 | Server-render recent articles on home | Replace client `RecentBlogSection` with async server component + `listArticles()` | Crawlable links; faster meaningful paint |
+| C2 | Split Hero server/client | Keep static hero markup server-side; client only for inquiry modal trigger if needed | Smaller critical JS; better LCP |
+| C3 | `next/image` for all local + remote images | `images.remotePatterns` for asset CDN; sizes/fill/priority on LCP image | LCP, bandwidth, CLS |
+| C4 | Hero format | Serve WebP/AVIF; `priority` only on hero; correct `sizes` | LCP bytes |
+| C5 | Article images | Width/height or aspect-ratio; lazy below fold | CLS, LCP |
+| C6 | Prism strategy | Dynamic import per language; or `shiki` on server for static HTML; or highlight on demand | TBT/INP on long posts |
+| C7 | Reduce blur/decoration cost | Audit heavy `blur-[140px]` layers on mobile | GPU / paint cost |
+| C8 | Caching strategy | Document `revalidate` per route; stale-while-revalidate for API; CDN cache headers on static assets | TTFB globally |
+| C9 | Bundle analysis | `@next/bundle-analyzer` in CI optional | Prevent regressions |
+| C10 | Preconnect to API/CDN | `<link rel="preconnect">` for asset host | Faster image/API |
+
+### Workstream D — Content & ranking strategy (not all code)
+
+| # | Action | Detail |
+|---|--------|--------|
+| D1 | Keyword map | Map each service (web, mobile, cloud) + each tech stack to 3–5 target queries |
+| D2 | Topic clusters | Hub page + 4–8 supporting articles with internal links |
+| D3 | SERP-driven titles | Title 50–60 chars; meta 150–160; match intent (how-to vs comparison) |
+| D4 | Refresh cadence | Update `dateModified` when materially editing; note “Updated” on page (already partial) |
+| D5 | Link from money pages | Services, packages, footer → best blog proof posts |
+| D6 | External distribution | Dev.to/LinkedIn summaries linking canonical URL |
+
+### Workstream E — Measurement & governance
+
+| # | Improvement | How |
+|---|-------------|-----|
+| E1 | GSC property + sitemap ping | After deploy |
+| E2 | Weekly report | Top queries, pages, index status, CWV |
+| E3 | Lighthouse CI on `/`, `/blog`, `/blog/[sample]` | Budget thresholds |
+| E4 | Structured data testing | Rich Results Test per template |
+| E5 | Log `/api` failures | Sitemap empty when API down → SEO blind spot |
+
+---
+
+## 6. Step-by-step implementation roadmap
+
+### Phase 2.0 — Measurement & quick wins (Week 1)
+
+| Step | Task | Owner | Fixes |
+|------|------|-------|-------|
+| 1 | Verify `NEXT_PUBLIC_SITE_URL` in prod | DevOps | Correct canonicals/sitemap |
+| 2 | Add site to Google Search Console; submit `sitemap.xml` | Marketing/Dev | Visibility into index issues |
+| 3 | Add analytics with consent if required | Dev | Attribution |
+| 4 | Fix Organization `sameAs` to real URLs | Content | Entity trust |
+| 5 | Add `metadata` to `app/page.tsx` | Dev | Home SERP snippet control |
+| 6 | Blog filter URLs: `noindex,follow` when query params set | Dev | Duplicate indexation |
+| 7 | Run Lighthouse on home + article; save baseline | Dev | Benchmark |
+
+### Phase 2.1 — Blog technical SEO (Weeks 2–3)
+
+| Step | Task | Owner | Fixes |
+|------|------|-------|-------|
+| 8 | Implement `BreadcrumbList` + enriched `BlogPosting` | Dev | Topic + navigation signals |
+| 9 | Add `Blog` entity on index; `CollectionPage` optional | Dev | Collection understanding |
+| 10 | Build RSS route | Dev | Feed discovery |
+| 11 | Backend: SEO fields on articles (if not present) | Backend | Per-post optimization |
+| 12 | Wire `generateMetadata` to SEO fields | Dev | Titles/descriptions match intent |
+| 13 | Add topic hub pages + sitemap entries | Dev | Topic ranking URLs |
+| 14 | Redirect or canonical old `?techStack=` to hub | Dev | Consolidate signals |
+
+### Phase 2.2 — Performance (Weeks 3–4)
+
+| Step | Task | Owner | Fixes |
+|------|------|-------|-------|
+| 15 | `images.remotePatterns` + migrate article imgs to `Image` | Dev | LCP/CLS |
+| 16 | Convert hero to WebP/AVIF; server hero section | Dev | Home LCP |
+| 17 | Server-render `RecentBlogSection` | Dev | Crawl + perf |
+| 18 | Prism lazy-load or server highlight | Dev | Article INP/TBT |
+| 19 | Revisit `revalidate` + error handling when API fails | Dev | Stale/empty SEO |
+
+### Phase 2.3 — Authority & content (Ongoing)
+
+| Step | Task | Owner | Fixes |
+|------|------|-------|-------|
+| 20 | Author pages + bios | Content/Dev | E-E-A-T |
+| 21 | Internal linking pass on all published posts | Content | PageRank flow |
+| 22 | Package/service landing pages (real URLs) | Dev/Content | Commercial rankings |
+| 23 | Monthly: update top 5 posts by impressions | Content | Freshness |
+| 24 | Track rankings for target keyword list | Marketing | Prove progress |
+
+---
+
+## 7. Backend / CMS requirements (workspace API)
+
+Coordinate with workspace team so the public API exposes:
+
+| Field | Use |
+|-------|-----|
+| `seoTitle` | `<title>` override |
+| `seoDescription` | meta description |
+| `ogImageUrl` | Social preview |
+| `canonicalPath` | Rare overrides |
+| `robotsNoindex` | Staging/draft protection |
+| `primaryTopic` / `topics[]` | `articleSection`, hubs, keywords |
+| `faq` | `FAQPage` schema |
+| `author.slug`, `bio`, `avatar`, `social` | Author pages + Person schema |
+| `readingTimeMinutes`, `wordCount` | Schema + UX |
+| `updatedAt` | Sitemap `lastModified` |
+
+---
+
+## 8. How blog posts rank (practical model)
+
+1. **Indexation** — URL in sitemap, no `noindex`, returns 200, not blocked by robots.
+2. **Relevance** — Title/H1/body match query; topic hubs reinforce theme.
+3. **Quality** — Depth, originality, code examples, updates (E-E-A-T).
+4. **Authority** — Brand searches, backlinks, mentions (off-site).
+5. **UX signals** — CWV, mobile-friendly, low pogo-sticking (indirect).
+
+Code alone does not guarantee #1 rankings; Phase 2 code removes **technical ceilings** so content can compete.
+
+---
+
+## 9. Acceptance criteria (Version 2 done)
+
+- [ ] GSC: sitemap processed; no critical coverage errors on blog URLs  
+- [ ] Rich Results Test: `BlogPosting` + `BreadcrumbList` valid on sample article  
+- [ ] Filtered blog URLs not indexed (or canonicalized)  
+- [ ] RSS available at `/feed.xml` (or chosen path)  
+- [ ] Topic hub pages indexed with unique copy  
+- [ ] Home recent articles visible in **view-source** HTML  
+- [ ] Mobile CWV: field data trending “Good” for LCP and INP on home + article  
+- [ ] Lighthouse performance ≥ 90 on home and one long article (lab, throttled)  
+- [ ] Documentation updated in this folder with “implemented” checklist  
+
+---
+
+## 10. Risk register
+
+| Risk | Mitigation |
+|------|------------|
+| API down at build → empty sitemap/articles | Build-time fallback; alert; retry |
+| Over-noindexing blog filters | Only noindex param URLs; hubs indexable |
+| Schema spam (fake FAQs) | Only mark up visible FAQ content |
+| Heavy JS returns after Prism “fix” | Measure bundle; cap languages loaded |
+
+---
+
+## 11. File change map (when implementing)
+
+| File / area | Expected changes |
+|-------------|------------------|
+| `app/page.tsx` | metadata, optional JSON-LD, server blog section |
+| `app/layout.tsx` | analytics, preconnect, fix `sameAs` |
+| `app/blog/page.tsx` | dynamic metadata for filters; Collection schema |
+| `app/blog/[slug]/page.tsx` | schema graph; metadata from SEO fields |
+| `app/blog/topic/[slug]/page.tsx` | **new** hub pages |
+| `app/feed.xml/route.ts` | **new** RSS |
+| `app/sitemap.ts` | hubs; remove weak hash URLs |
+| `next.config.ts` | `images.remotePatterns` |
+| `lib/blogApi.ts` | types for SEO fields |
+| `components/HeroSection.tsx` | server/client split; image format |
+| `components/RecentBlogSection.tsx` | server component |
+| `article CMS` | SEO + author fields |
+
+---
+
+## 12. Maintenance checklist (monthly)
+
+1. Review GSC performance (queries, pages, indexing).  
+2. Fix crawl errors and 404s.  
+3. Update 1–2 articles with material edits + `dateModified`.  
+4. Add internal links from new posts to hubs and service pages.  
+5. Check CWV dashboard; file ticket if regression.  
+6. Validate structured data after template changes.  
+
+---
+
+*End of Phase 2 plan — implementation tracking: mark sections in README or add `IMPLEMENTATION-STATUS.md` when work begins.*
