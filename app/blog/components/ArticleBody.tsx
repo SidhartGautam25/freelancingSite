@@ -161,7 +161,11 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
       </div>
 
       {/* Code Text Content with Prism Syntax Highlighting */}
-      <pre className="p-5 overflow-x-auto text-sm font-mono leading-relaxed scrollbar-thin bg-[#0F172A]">
+      <pre
+        tabIndex={0}
+        suppressHydrationWarning
+        className="p-5 overflow-x-auto text-sm font-mono leading-relaxed scrollbar-thin bg-[#0F172A]"
+      >
         <code
           className={`code-ide font-mono text-sm leading-relaxed block text-slate-200 language-${language}`}
           dangerouslySetInnerHTML={{ __html: highlightedHtml }}
@@ -233,9 +237,10 @@ export default function ArticleBody({ blocks }: ArticleBodyProps) {
 
           case "paragraph": {
             return (
-              <p
+              <div
                 key={block.id}
-                className="leading-relaxed text-slate-300 [&_u]:underline [&_u]:underline-offset-2 [&_strong]:text-white [&_strong]:font-bold [&_b]:text-white [&_b]:font-bold"
+                suppressHydrationWarning
+                className="font-serif text-[20.5px] sm:text-[21px] leading-[1.88] text-[#d8dee9] whitespace-pre-wrap break-words tracking-[0.01em] [&_em]:italic [&_strong]:font-bold [&_u]:underline [&_u]:underline-offset-[5px] [&_u]:decoration-[1.5px] [&_a]:text-[#ffa7c4] [&_a]:underline [&_a]:underline-offset-[5px] [&_a]:decoration-[1.5px] [&_a]:decoration-[#ffa7c4]/70 hover:[&_a]:text-[#ff80a5] [&_mark]:rounded-sm [&_mark]:px-0.5 [&_code]:font-mono [&_code]:text-[0.88em] [&_code]:rounded [&_code]:bg-[#1e232a] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[#ffa7c4]"
                 dangerouslySetInnerHTML={{ __html: block.html }}
               />
             );
